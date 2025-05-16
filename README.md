@@ -121,7 +121,6 @@ TaskHeaven leverages a modern, robust technology stack designed for performance,
 | [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/) | JWT authentication | 5.2.x |
 | [Pillow](https://python-pillow.org/) | Image processing | 9.5.x |
 | [Django CORS Headers](https://github.com/adamchainz/django-cors-headers) | CORS support | 4.1.x |
-| [Celery](https://docs.celeryq.dev/) | Task queue | 5.3.x |
 | [Redis](https://redis.io/) | Caching & messaging | 7.0.x |
 
 ### Frontend
@@ -134,21 +133,7 @@ TaskHeaven leverages a modern, robust technology stack designed for performance,
 | [Tailwind CSS](https://tailwindcss.com/) | Styling | 3.3.x |
 | [Redux Toolkit](https://redux-toolkit.js.org/) | State management | 1.9.x |
 | [React Query](https://tanstack.com/query/latest) | Data fetching | 4.29.x |
-| [Chart.js](https://www.chartjs.org/) | Data visualization | 4.3.x |
 | [React Hook Form](https://react-hook-form.com/) | Form handling | 7.45.x |
-
-### DevOps & Tools
-
-| Technology | Purpose |
-|------------|---------|
-| [Docker](https://www.docker.com/) | Containerization |
-| [GitHub Actions](https://github.com/features/actions) | CI/CD |
-| [Nginx](https://nginx.org/) | Web server |
-| [Gunicorn](https://gunicorn.org/) | WSGI server |
-| [Jest](https://jestjs.io/) | Frontend testing |
-| [Pytest](https://docs.pytest.org/) | Backend testing |
-| [ESLint](https://eslint.org/) | JavaScript linting |
-| [Black](https://black.readthedocs.io/) | Python formatting |
 
 ## System Architecture
 
