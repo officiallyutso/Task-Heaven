@@ -125,7 +125,6 @@ function Tasks() {
     setTimeout(fetchTasks, 0)
   }
   
-  // Find the createTask function and update it to:
   
   const createTask = async (e) => {
     e.preventDefault();
@@ -147,18 +146,15 @@ function Tasks() {
         description: newTask.description,
         status: newTask.status,
         priority: newTask.priority,
-        team_id: newTask.team,  // Use team_id instead of team
+        team_id: newTask.team,
         due_date: newTask.due_date || null
       };
       
-      // Only add assigned_to_id if it's not empty
       if (newTask.assigned_to_id) {
         taskData.assigned_to_id = newTask.assigned_to_id;
       }
       
       const response = await axios.post('/api/tasks/', taskData);
-      
-      // Add the new task to the tasks list
       setTasks([response.data, ...tasks]);
       
       // Reset form and close modal

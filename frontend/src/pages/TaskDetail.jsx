@@ -91,7 +91,6 @@ function TaskDetail() {
     }
   }
   
-  // In the handleAddComment function:
   
   const handleAddComment = async (e) => {
     e.preventDefault();

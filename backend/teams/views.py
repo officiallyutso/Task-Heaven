@@ -12,10 +12,8 @@ class TeamViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Team.objects.filter(members=self.request.user)
     
-    # Add this method to set created_by when creating a team
     def perform_create(self, serializer):
         team = serializer.save(created_by=self.request.user)
-        # Add the creator as an admin member of the team
         TeamMembership.objects.create(
             team=team,
             user=self.request.user,
@@ -80,7 +78,6 @@ class TeamViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         
         elif request.method == 'POST':
-            # Add a member to a team
             # Check if user is admin
             if not TeamMembership.objects.filter(team=team, user=request.user, role='admin').exists():
                 return Response({"detail": "Only team admins can add members"}, status=status.HTTP_403_FORBIDDEN)

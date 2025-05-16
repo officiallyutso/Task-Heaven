@@ -93,7 +93,6 @@ function TeamDetail() {
   
   const handleAddMember = async (userId) => {
     try {
-      // Added await but removed the unused response variable
       await axios.post(`/api/teams/${teamId}/members/`, {
         user: userId
       })

@@ -3,7 +3,6 @@ import axios from 'axios'
 
 const AuthContext = createContext()
 
-// Change this to a named function declaration instead of an arrow function
 export function useAuth() {
   return useContext(AuthContext)
 }
@@ -61,7 +60,6 @@ export function AuthProvider({ children }) {
       return { success: true }
     } catch (error) {
       console.error('Registration error:', error)
-      // Return more detailed error information and log it
       console.log('Error response data:', error.response?.data)
       return { 
         success: false, 

@@ -20,10 +20,8 @@ function Teams() {
       setLoading(true)
       const response = await axios.get('/api/teams/')
       
-      // Make sure we're handling both paginated and non-paginated responses
       const teamsData = response.data.results || response.data
       
-      // Ensure we're getting an array even if the API returns an empty object
       setTeams(Array.isArray(teamsData) ? teamsData : [])
       
       setLoading(false)
