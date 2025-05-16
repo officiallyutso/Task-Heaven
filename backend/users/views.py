@@ -7,7 +7,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions, status
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .serializers import UserSerializer
+from rest_framework import permissions
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import UserSerializer, ProfileSerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -38,13 +42,6 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
-def user_profile(request):
-    """Get the current user's profile"""
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def search_users(request):
     """Search for users by username, first name, or last name"""
     query = request.query_params.get('query', '')
@@ -59,3 +56,17 @@ def search_users(request):
     
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def get_user_profile(request):
+    """Get the profile of the currently authenticated user"""
+    try:
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        serializer = ProfileSerializer(profile)
+        return Response({
+            'user': UserSerializer(request.user).data,
+            'profile': serializer.data
+        })
+    except Exception as e:
+        return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
