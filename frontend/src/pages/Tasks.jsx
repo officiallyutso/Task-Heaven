@@ -125,28 +125,43 @@ function Tasks() {
     setTimeout(fetchTasks, 0)
   }
   
+  // Find the createTask function and update it to:
+  
   const createTask = async (e) => {
-    e.preventDefault()
-    setCreateTaskError('')
+    e.preventDefault();
+    
+    if (!newTask.title.trim()) {
+      setCreateTaskError('Task title is required');
+      return;
+    }
+    
+    if (!newTask.team) {
+      setCreateTaskError('Please select a team');
+      return;
+    }
     
     try {
+      // Prepare the data for submission
       const taskData = {
         title: newTask.title,
         description: newTask.description,
         status: newTask.status,
         priority: newTask.priority,
-        team: parseInt(newTask.team),
+        team_id: newTask.team,  // Use team_id instead of team
         due_date: newTask.due_date || null
-      }
+      };
       
+      // Only add assigned_to_id if it's not empty
       if (newTask.assigned_to_id) {
-        taskData.assigned_to = parseInt(newTask.assigned_to_id)
+        taskData.assigned_to_id = newTask.assigned_to_id;
       }
       
-      const response = await axios.post('/api/tasks/', taskData)
+      const response = await axios.post('/api/tasks/', taskData);
       
-      setTasks([response.data, ...tasks])
+      // Add the new task to the tasks list
+      setTasks([response.data, ...tasks]);
       
+      // Reset form and close modal
       setNewTask({
         title: '',
         description: '',
@@ -155,19 +170,14 @@ function Tasks() {
         team: '',
         assigned_to_id: '',
         due_date: ''
-      })
-      setShowCreateModal(false)
-      
-      fetchTasks()
+      });
+      setShowCreateModal(false);
+      setCreateTaskError('');
     } catch (error) {
-      console.error('Error creating task:', error)
-      const errorMessage = error.response?.data?.detail || 
-                          error.response?.data?.message || 
-                          Object.values(error.response?.data || {}).flat().join(', ') ||
-                          'Failed to create task';
-      setCreateTaskError(errorMessage)
+      console.error('Error creating task:', error);
+      setCreateTaskError('Failed to create task. Please try again.');
     }
-  }
+  };
   
   const getStatusBadgeClass = (status) => {
     switch (status) {

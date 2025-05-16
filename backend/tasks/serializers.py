@@ -10,16 +10,24 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'task', 'user', 'content', 'created_at']
-        read_only_fields = ['user', 'created_at']
+        read_only_fields = ['user', 'created_at', 'task']
     
     def create(self, validated_data):
-        user = self.context['request'].user
-        return Comment.objects.create(user=user, **validated_data)
+        return Comment.objects.create(**validated_data)
 
 class TaskSerializer(serializers.ModelSerializer):
     created_by_username = serializers.SerializerMethodField(read_only=True)
     assigned_to_name = serializers.SerializerMethodField(read_only=True)
     team_name = serializers.SerializerMethodField(read_only=True)
+    
+    # Add these nested serializers for detailed information
+    created_by = UserSerializer(read_only=True)
+    assigned_to = UserSerializer(read_only=True)
+    team = TeamSerializer(read_only=True)
+    
+    # Add these fields to handle the IDs during creation/update
+    assigned_to_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    team_id = serializers.IntegerField(write_only=True, required=False)
     
     class Meta:
         model = Task
@@ -37,5 +45,22 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_team_name(self, obj):
         return obj.team.name if obj.team else None
     
-    # Remove this create method as it's causing the conflict
-    # The created_by will be set in the perform_create method in the view
+    def validate(self, data):
+        # Handle assigned_to_id if present
+        assigned_to_id = data.pop('assigned_to_id', None)
+        if assigned_to_id:
+            try:
+                data['assigned_to'] = User.objects.get(id=assigned_to_id)
+            except User.DoesNotExist:
+                raise serializers.ValidationError({"assigned_to_id": "User does not exist"})
+        
+        # Handle team_id if present
+        team_id = data.pop('team_id', None)
+        if team_id:
+            from teams.models import Team
+            try:
+                data['team'] = Team.objects.get(id=team_id)
+            except Team.DoesNotExist:
+                raise serializers.ValidationError({"team_id": "Team does not exist"})
+        
+        return data

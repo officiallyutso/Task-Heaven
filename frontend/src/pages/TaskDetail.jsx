@@ -91,23 +91,29 @@ function TaskDetail() {
     }
   }
   
+  // In the handleAddComment function:
+  
   const handleAddComment = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     
-    if (!newComment.trim()) return
+    if (!newComment.trim()) {
+      setError('Comment cannot be empty');
+      return;
+    }
     
     try {
       const response = await axios.post(`/api/tasks/${taskId}/comments/`, {
         content: newComment
-      })
+      });
       
-      setComments([...comments, response.data])
-      setNewComment('')
+      // Add the new comment to the comments list
+      setComments([response.data, ...comments]);
+      setNewComment('');
     } catch (error) {
-      console.error('Error adding comment:', error)
-      setError('Failed to add comment')
+      console.error('Error adding comment:', error);
+      setError('Failed to add comment. Please try again.');
     }
-  }
+  };
   
   const handleDeleteTask = async () => {
     if (!window.confirm('Are you sure you want to delete this task? This action cannot be undone.')) return

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -22,6 +22,34 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # This is the only place where created_by should be set
         serializer.save(created_by=self.request.user)
+    
+    @action(detail=True, methods=['get', 'post'])
+    def comments(self, request, pk=None):
+        task = self.get_object()
+        
+        if request.method == 'GET':
+            comments = Comment.objects.filter(task=task).order_by('-created_at')
+            serializer = CommentSerializer(comments, many=True)
+            return Response(serializer.data)
+        
+        elif request.method == 'POST':
+            # Check if user is a member of the team
+            if not TeamMembership.objects.filter(team=task.team, user=request.user).exists():
+                return Response({"detail": "You are not a member of this team"}, status=status.HTTP_403_FORBIDDEN)
+            
+            # Create a new comment
+            content = request.data.get('content')
+            if not content:
+                return Response({"detail": "Comment content is required"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            comment = Comment.objects.create(
+                task=task,
+                user=request.user,
+                content=content
+            )
+            
+            serializer = CommentSerializer(comment)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
