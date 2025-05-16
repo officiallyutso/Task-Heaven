@@ -20,9 +20,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Task.objects.filter(team__in=user_teams)
     
     def perform_create(self, serializer):
-        team_id = self.request.data.get('team')
-        if not TeamMembership.objects.filter(team_id=team_id, user=self.request.user).exists():
-            return Response({"detail": "You are not a member of this team"}, status=403)
+        # This is the only place where created_by should be set
         serializer.save(created_by=self.request.user)
 
 class CommentViewSet(viewsets.ModelViewSet):
