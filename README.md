@@ -107,7 +107,7 @@ The application follows modern development practices, implementing a RESTful API
 - Productivity insights
 </details>
 
-## 💻 Technology Stack
+## Technology Stack
 
 TaskHeaven leverages a modern, robust technology stack designed for performance, scalability, and developer experience:
 
