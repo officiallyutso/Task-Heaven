@@ -119,7 +119,6 @@ TaskHeaven leverages a modern, robust technology stack designed for performance,
 | [Django REST Framework](https://www.django-rest-framework.org/) | API development | 3.14.x |
 | [PostgreSQL](https://www.postgresql.org/) | Database | 14.x |
 | [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/) | JWT authentication | 5.2.x |
-| [Pillow](https://python-pillow.org/) | Image processing | 9.5.x |
 | [Django CORS Headers](https://github.com/adamchainz/django-cors-headers) | CORS support | 4.1.x |
 | [Redis](https://redis.io/) | Caching & messaging | 7.0.x |
 
