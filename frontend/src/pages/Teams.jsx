@@ -34,7 +34,7 @@ function Teams() {
 
   const handleCreateTeam = async (e) => {
     e.preventDefault()
-    
+  
     try {
       const response = await axios.post('/api/teams/', newTeam)
       
