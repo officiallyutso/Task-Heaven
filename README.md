@@ -141,7 +141,7 @@ TaskHeaven follows a modern client-server architecture with clearly separated fr
 ```
 ┌─────────────────┐     ┌──────────────────────────┐     ┌─────────────────┐
 │                 │     │                          │     │                 │
-│   React SPA     │◄────┤    RESTful API Layer     │◄────┤   PostgreSQL    │
+│   React SPA     │◄────┤    RESTful API Layer     │◄────┤     SQLite      │
 │   (Frontend)    │     │    (Django REST API)     │     │   Database      │
 │                 │────►│                          │────►│                 │
 └─────────────────┘     └──────────────────────────┘     └─────────────────┘
@@ -179,7 +179,7 @@ TaskHeaven follows a modern client-server architecture with clearly separated fr
    - Business logic implementation
    - Database ORM
 
-3. **Database (PostgreSQL)**
+3. **Database (SQLite)**
    - Relational data storage
    - Complex query optimization
    - Data integrity enforcement
@@ -227,7 +227,7 @@ flowchart TB
     UI -->|Dispatches actions| Actions[API Actions]
     Actions -->|Makes requests to| API[Django REST API]
     API -->|Processes requests| Logic[Business Logic]
-    Logic -->|CRUD operations| DB[(PostgreSQL Database)]
+    Logic -->|CRUD operations| DB[(SQLite Database)]
     DB -->|Returns data| Logic
     Logic -->|Returns responses| API
     API -->|Returns data| Actions
@@ -290,7 +290,7 @@ Before installing TaskHeaven, ensure you have the following installed:
 
 4. **Set up the database**
    ```bash
-   # Create a PostgreSQL database
+   # Create a SQLite database
    createdb taskheaven
    
    # Run migrations
@@ -341,7 +341,7 @@ ALLOWED_HOSTS=localhost,127.0.0.1
 
 # Database settings
 DB_NAME=taskheaven
-DB_USER=postgres
+DB_USER=sqlite
 DB_PASSWORD=your_db_password
 DB_HOST=localhost
 DB_PORT=5432
@@ -1081,7 +1081,7 @@ TaskHeaven was made possible thanks to the following open-source projects and re
 
 - [Django](https://www.djangoproject.com/) - The web framework that powers the backend
 - [React](https://reactjs.org/) - The library used for building the user interface
-- [PostgreSQL](https://www.postgresql.org/) - The reliable database that stores all application data
+- [SQLite](https://www.postgresql.org/) - The reliable database that stores all application data
 - [Redis](https://redis.io/) - The in-memory data store used for caching and messaging
 - [Tailwind CSS](https://tailwindcss.com/) - The utility-first CSS framework for rapid UI development
 - [Docker](https://www.docker.com/) - The containerization platform that simplifies deployment
